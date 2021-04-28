@@ -22,5 +22,20 @@ function loadData() {
         //Data form: [time, low, high, open, close, volume]
         console.log("Första: " + data[0]);
         //måst kanske städa data, so it makes sense D:
+
+        createChart(data);
     });
+}
+
+//skapa candelstick chart
+function createChart(data) {
+
+    var width = 400,
+        height = 250;
+
+    var svg = d3.select("#chart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .style("fill", "white");
 }
