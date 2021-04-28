@@ -8,19 +8,19 @@ var pastDate = startdate.getDate() - 30;
 startdate.setDate(pastDate);
 startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + startdate.getDate();
 
-
 console.log("today:" + enddate);
 console.log("30 days ago: " + startdate);
 
-//var url = 'https://api.pro.coinbase.com/products/BTC-EUR/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400'
-
+//körs då man trycker på knappen
 function loadData() {
+    //Get data from API for 30 days 
     var url = 'https://api.pro.coinbase.com/products/BTC-EUR/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400'
-        //Get data from API for 30 days 
-        //[time, low, high, open, close, volume]
+
     $.getJSON(url, function(data) {
+        //skriv ut data i console 
         console.log("Hela dataset: " + data);
+        //Data form: [time, low, high, open, close, volume]
         console.log("Första: " + data[0]);
-        //måst kanske städa data, so it makes sense
+        //måst kanske städa data, so it makes sense D:
     });
 }
