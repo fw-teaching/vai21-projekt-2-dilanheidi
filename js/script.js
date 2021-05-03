@@ -19,10 +19,10 @@ function loadData() {
     $.getJSON(url, function(data) {
         //skriv ut data i console 
         console.log("Hela dataset: " + data);
-        //Data form: [time, low, high, open, close, volume]
+        //Data format: [time, low, high, open, close, volume]
         console.log("Första: " + data[0]);
-        //måst kanske städa data, so it makes sense D:
-
+        //TO DO: måst kanske städa data, so it makes sense D:
+        //TO DO: convert time with Date()
         createChart(data);
     });
 }
