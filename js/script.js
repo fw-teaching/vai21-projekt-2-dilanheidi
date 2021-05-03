@@ -17,12 +17,14 @@ function loadData() {
     var url = 'https://api.pro.coinbase.com/products/BTC-EUR/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400'
 
     $.getJSON(url, function(data) {
-        //skriv ut data i console 
-        console.log("Hela dataset: " + data);
-        //Data format: [time, low, high, open, close, volume]
-        console.log("Första: " + data[0] + ", type: " + (typeof 'data'));
-        //TO DO: måst kanske städa data, so it makes sense D:
-        //tanken: split the data, put into separate arrays in an array
+        //skriv ut data i console
+        console.log("Hela dataset: ");
+        for (var x = 0; x < data.length; x++) {
+            //Data format: [time, low, high, open, close, volume]
+            console.log(x + " dataset: " + data[x]);
+        }
+
+        //COULD DO?: split the data, put into separate arrays in an array
         var splitdata = data.split(','); //funkar ej
         console.log(splitdata);
 
