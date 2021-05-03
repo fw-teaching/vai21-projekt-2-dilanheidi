@@ -20,10 +20,29 @@ function loadData() {
         //skriv ut data i console 
         console.log("Hela dataset: " + data);
         //Data format: [time, low, high, open, close, volume]
-        console.log("Första: " + data[0]);
+        console.log("Första: " + data[0] + ", type: " + (typeof 'data'));
         //TO DO: måst kanske städa data, so it makes sense D:
+        //tanken: split the data, put into separate arrays in an array
+        var splitdata = data.split(','); //funkar ej
+        console.log(splitdata);
+
+        var time = [],
+            low = [],
+            high = [],
+            open = [],
+            close = [],
+            volume = [];
+
+        /*for (i = 0; i < splitdata.length; i = +6) {
+            time = time.push(splitdata[i]);
+            low = low.push(d + 1);
+            high = high.push(d + 2);
+            open = open.push(d + 3);
+            close = close.push(d + 4);
+            volume = volume.push(d + 5);
+        }*/
         //TO DO: convert time with Date()
-        createChart(data);
+        //createChart(data);
     });
 }
 
