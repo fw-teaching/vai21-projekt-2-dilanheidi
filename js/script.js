@@ -4,7 +4,7 @@ var enddate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.g
 
 //Get date from 30 days ago = startdate
 var startdate = new Date();
-var pastDate = startdate.getDate() - 30;
+var pastDate = startdate.getDate() - 29;
 startdate.setDate(pastDate);
 startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + startdate.getDate();
 
