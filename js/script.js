@@ -73,3 +73,9 @@ function changeCurrency(inputCurr) {
             console.log(data);
         });*/
 }
+
+function changeDays(inputDays) {
+    var days = inputDays;
+
+    console.log(days);
+}
