@@ -10,6 +10,14 @@ startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + s
 
 var curr = 0;
 
+var time = [],
+low = [],
+high = [],
+open = [],
+close = [],
+volume = [];
+
+
 //körs då man trycker på knappen
 function loadData() {
     //Get data from API for 30 days 
@@ -24,15 +32,22 @@ function loadData() {
         }
 
         //COULD DO?: split the data, put into separate arrays in an array
-        var splitdata = data.split(','); //funkar ej
-        console.log(splitdata);
+      //  var splitdata = data.split(','); //funkar ej
+        //console.log(splitdata);
 
-        var time = [],
-            low = [],
-            high = [],
-            open = [],
-            close = [],
-            volume = [];
+        console.log(data);
+        var parse = d3.timeParse("%s");
+        var format = d3.timeFormat("%Y-%m-%d");  //format on how to display the date 
+   
+        data.forEach(function (d) {  //adding close,open etc to the data array 
+            var time = parse(d[0]);
+            d.date = format(time);
+                d.low = +d[1];
+                d.high = +d[2];
+                d.open = +d[3];
+                d.close = +d[4];
+                d.volume = +d[5];
+        });
 
         /*for (i = 0; i < splitdata.length; i = +6) {
             time = time.push(splitdata[i]);
