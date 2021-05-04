@@ -13,8 +13,8 @@ var curr = 0;
 var time = [],
 low = [],
 high = [],
-open = [],
-close = [],
+openn = [],
+closee = [],
 volume = [];
 
 
@@ -31,49 +31,48 @@ function loadData() {
             console.log(x + " dataset: " + data[x]);
         }
 
-        //COULD DO?: split the data, put into separate arrays in an array
-      //  var splitdata = data.split(','); //funkar ej
-        //console.log(splitdata);
-
         console.log(data);
         var parse = d3.timeParse("%s");
         var format = d3.timeFormat("%Y-%m-%d");  //format on how to display the date 
-   
+
+    function buildchart(data) {
+
         data.forEach(function (d) {  //adding close,open etc to the data array 
             var time = parse(d[0]);
-            d.date = format(time);
+            d.date = format(time); 
                 d.low = +d[1];
                 d.high = +d[2];
                 d.open = +d[3];
                 d.close = +d[4];
                 d.volume = +d[5];
-        });
+            
+                low.push(d.low);
+                high.push(d.high);
+                openn.push(d.open);
+                closee.push(d.close);
+                volume.push(d.volume);
+            });
+   console.log(low);
 
-        /*for (i = 0; i < splitdata.length; i = +6) {
-            time = time.push(splitdata[i]);
-            low = low.push(d + 1);
-            high = high.push(d + 2);
-            open = open.push(d + 3);
-            close = close.push(d + 4);
-            volume = volume.push(d + 5);
-        }*/
-        //TO DO: convert time with Date()
-        //createChart(data);
+/** T H E      C H A R T  */
+        var width = 400,
+            height = 250;
+             
+        var chart = d3.select("#chart")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .style("fill", "white");
+        
+
+}
+
+buildchart(data);
+
     });
 }
 
-//skapa candelstick chart
-function createChart(data) {
 
-    var width = 400,
-        height = 250;
-
-    var svg = d3.select("#chart")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .style("fill", "white");
-}
 
 function changeCurrency(inputCurr) {
     curr = inputCurr;
