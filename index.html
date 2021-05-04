@@ -21,7 +21,7 @@
     <h2>Heidi Saaristo och Dilan Zibari</h2>
 
     <h3>Del 1</h3>
-    <div>
+    <div class="container">
         <p>Hämta data</p>
         <input type="button" value="Get data" onclick="loadData()">
     </div>
@@ -29,6 +29,21 @@
 
     <div id="chart">
         <p>Candlestick diagram</p>
+    </div>
+
+    <h3>Del 3</h3>
+    <div class="container">
+        <div class="dropdown">
+            <form name="change_currency">
+                <label for="currency">Välj Valuta</label>
+                <select name="currency" id="curr" onchange="changeCurrency(this.value)">
+                <option value="BTC-USD">BTC-USD</option>
+                <option value="BNT-GBP">BNT-GBP</option>
+                <option value="BTC-EUR">BTC-EUR</option>
+            </select>
+            </form>
+        </div>
+
     </div>
 
 </body>

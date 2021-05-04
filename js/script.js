@@ -60,3 +60,16 @@ function createChart(data) {
         .attr("height", height)
         .style("fill", "white");
 }
+
+function changeCurrency(inputCurr) {
+
+    var curr = inputCurr;
+
+    console.log(curr);
+
+    var url = 'https://api.pro.coinbase.com/products/' + curr + '/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400';
+
+    /*$.getJSON(url, function(data){ 
+            console.log(data);
+        });*/
+}
