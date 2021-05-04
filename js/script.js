@@ -31,13 +31,29 @@ function loadData() {
             console.log(x + " dataset: " + data[x]);
         }
 
-        console.log(data);
+    function buildchart(data) {  
+        var w = 600,
+            h = 800;
+
+        var svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .style("background", "white");
+
+        var x = d3.scaleTime()
+            .range([0, w]);
+        var y = d3.scaleLinear()
+            .range([h, 0]);
+    
+
         var parse = d3.timeParse("%s");
-        var format = d3.timeFormat("%Y-%m-%d");  //format on how to display the date 
-
-    function buildchart(data) {
-
+        var format = d3.timeFormat("%Y-%m-%d");  //format on how to display the date    
+         
         data.forEach(function (d) {  //adding close,open etc to the data array 
+            var maxVal = -1000;
+            var minVal = 1000;
+
             var time = parse(d[0]);
             d.date = format(time); 
                 d.low = +d[1];
@@ -45,6 +61,11 @@ function loadData() {
                 d.open = +d[3];
                 d.close = +d[4];
                 d.volume = +d[5];
+
+                if (d.high > maxVal)
+                    maxVal = d.high;
+                if (d.low < minVal)
+                    minVal = d.low;
             
                 low.push(d.low);
                 high.push(d.high);
@@ -52,18 +73,6 @@ function loadData() {
                 closee.push(d.close);
                 volume.push(d.volume);
             });
-   console.log(low);
-
-/** T H E      C H A R T  */
-        var width = 400,
-            height = 250;
-             
-        var chart = d3.select("#chart")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .style("fill", "white");
-        
 
 }
 
