@@ -66,22 +66,29 @@ function changeCurrency(inputCurr) {
 
     var url = 'https://api.pro.coinbase.com/products/' + curr + '/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400';
 
+    //Get data
     $.getJSON(url, function(data) {
         console.log(data);
+        //createChart(data);2
     });
 }
 
 function changeDays(inputDays) {
     var days = inputDays;
     console.log(days);
+
     //set the start date according to input
     var start = new Date();
     var end = start.getDate() - days;
     start.setDate(end);
     start = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate();
     console.log(start + " " + curr);
+
     var url = 'https://api.pro.coinbase.com/products/' + curr + '/candles?start=' + start + '&end=' + enddate + '&granularity=86400';
+
+    //Get data
     $.getJSON(url, function(data) {
         console.log(data);
+        //createChart(data);
     });
 }
