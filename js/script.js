@@ -8,9 +8,6 @@ var pastDate = startdate.getDate() - 29;
 startdate.setDate(pastDate);
 startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + startdate.getDate();
 
-console.log("today:" + enddate);
-console.log("30 days ago: " + startdate);
-
 var curr = 0;
 
 //körs då man trycker på knappen
@@ -69,9 +66,9 @@ function changeCurrency(inputCurr) {
 
     var url = 'https://api.pro.coinbase.com/products/' + curr + '/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400';
 
-    /*$.getJSON(url, function(data){ 
-            console.log(data);
-        });*/
+    $.getJSON(url, function(data) {
+        console.log(data);
+    });
 }
 
 function changeDays(inputDays) {
@@ -82,5 +79,9 @@ function changeDays(inputDays) {
     var end = start.getDate() - days;
     start.setDate(end);
     start = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate();
-    console.log(start);
+    console.log(start + " " + curr);
+    var url = 'https://api.pro.coinbase.com/products/' + curr + '/candles?start=' + start + '&end=' + enddate + '&granularity=86400';
+    $.getJSON(url, function(data) {
+        console.log(data);
+    });
 }
