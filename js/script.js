@@ -11,6 +11,8 @@ startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + s
 console.log("today:" + enddate);
 console.log("30 days ago: " + startdate);
 
+var curr = 0;
+
 //körs då man trycker på knappen
 function loadData() {
     //Get data from API for 30 days 
@@ -62,9 +64,7 @@ function createChart(data) {
 }
 
 function changeCurrency(inputCurr) {
-
-    var curr = inputCurr;
-
+    curr = inputCurr;
     console.log(curr);
 
     var url = 'https://api.pro.coinbase.com/products/' + curr + '/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400';
@@ -76,6 +76,11 @@ function changeCurrency(inputCurr) {
 
 function changeDays(inputDays) {
     var days = inputDays;
-
     console.log(days);
+    //set the start date according to input
+    var start = new Date();
+    var end = start.getDate() - days;
+    start.setDate(end);
+    start = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate();
+    console.log(start);
 }
