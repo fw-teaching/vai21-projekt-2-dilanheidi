@@ -40,11 +40,11 @@ function loadData(url) {
             var w = 500,
                 h = 400;
 
-            var svg = d3.select("#chart")
+            /*var svg = d3.select("#chart")
                 .append("svg")
                 .attr("width", w)
                 .attr("height", h)
-                .style("background", "white");
+                .style("background", "white");*/
 
 
             var parse = d3.timeParse("%s");
@@ -65,25 +65,53 @@ function loadData(url) {
                 openn.push(d.open);
                 closee.push(d.close);
                 volume.push(d.volume);
-
-                svg.selectAll("rect")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("y", function(d) {
-                        return d3.max([d.open, d.close]);
-                    })
-                    .attr("height", function(d) {
-                        return Math.abs(d.open - d.close); //absolutavärdet 
-                    })
-                    .classed("rise", function(d) {
-                        return (d.close > d.open);
-                    })
-                    .classed("fall", function(d) {
-                        return (d.open > d.close);
-                    });
-
             });
+
             console.log(data);
+
+            //
+
+            /*svg.selectAll("rect")
+                   .data(data)
+                   .enter().append("rect")
+                   .attr("y", function(d) {
+                       return d3.max([d.open, d.close]);
+                   })
+                   .attr("height", function(d) {
+                       return Math.abs(d.open - d.close); //absolutavärdet 
+                   })
+                   .classed("rise", function(d) {
+                       return (d.close > d.open);
+                   })
+                   .classed("fall", function(d) {
+                       return (d.open > d.close);
+                   });*/
+
+            //X-Axis : date
+            var x = d3.scaleTime().range([0, w - margin.left - margin.right]);
+            //scale range of data
+            x.domain(d3.extent(data, function(d) { return d.date; }));
+
+            //Y-Axis : currency
+            var y = d3.scaleLinear().range([h - margin.top - margin.bottom, 0]);
+            y.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+            var svg = d3.select("body").append("svg")
+                .attr("width", w + margin.left + margin.right)
+                .attr("height", h + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+            // Add the x Axis
+            svg.append("g")
+                .attr("transform", "translate(0," + h + ")")
+                .call(d3.axisBottom(x));
+
+
+            // Add the y Axis
+            svg.append("g")
+                .call(d3.axisLeft(y));
 
         }
 
