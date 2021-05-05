@@ -30,7 +30,8 @@ function loadData() {
             console.log(x + " dataset: " + data[x]);
         }
 
-    function buildchart(data) {  
+    function buildchart(data) { 
+        var margin = {top: 70, right: 20, bottom: 30, left: 40}; 
         var w = 500,
             h = 400;
 
@@ -39,63 +40,49 @@ function loadData() {
             .attr("width", w)
             .attr("height", h)
             .style("background", "white");
+            
 
         var parse = d3.timeParse("%s");
         var format = d3.timeFormat("%Y-%m-%d");  //format on how to display the date   
         var form =  d3.timeFormat("%d-%b");
 
-        data.forEach(function (d) {  
-            var maxVal = -1000;
-            var minVal = 1000;
-
+        data.forEach(function (d) { 
             var time = parse(d[0]);
-            d.date = form(time);   //adding close,open etc to each of the arrays
+            d.date = time;   //adding close,open etc to each of the arrays
                 d.low = +d[1];
                 d.high = +d[2];
                 d.open = +d[3];
                 d.close = +d[4];
                 d.volume = +d[5];
-
-                if (d.high > maxVal) //största och minsta värdet 
-                    maxVal = d.high;
-                if (d.low < minVal)
-                    minVal = d.low;
             
                 low.push(d.low);  //arrays of all the values
                 high.push(d.high);
                 openn.push(d.open);
                 closee.push(d.close);
                 volume.push(d.volume);
-                
+
+            svg.selectAll("rect")
+                .data(data)
+                .enter().append("rect")
+                .attr("y", function(d) {
+                    return d3.max([d.open, d.close]);
+                })
+                .attr("height", function(d) { 
+                    return -Math.abs(d.open - d.close);
+                })
+                .classed("rise", function(d) { 
+                        return (d.close>d.open); 
+                })
+                .classed("fall", function(d) { 
+                    return (d.open>d.close); 
+                });
+
             });
+
+           
             console.log(data);
 
-            svg.selectAll("line.ext")
-            .data(data)
-            .enter().append("line")
-            .attr("class", "ext")
-            .attr("x1", function(d) { return x(d.date)})
-            .attr("x2", function(d) { return x(d.date)})
-            .attr("y1", function(d) { return y(d.low);})
-            .attr("y2", function(d) { return y(d.high); });
-        
-          svg.selectAll("line.close")
-            .data(data)
-            .enter().append("line")
-            .attr("class", "close")
-            .attr("x1", function(d) { return x(d.date)+5})
-            .attr("x2", function(d) { return x(d.date)-1})
-            .attr("y1", function(d) { return y(d.close);})
-            .attr("y2", function(d) { return y(d.close); });
-        
-          svg.selectAll("line.open")
-            .data(data)
-            .enter().append("line")
-            .attr("class", "open")
-            .attr("x1", function(d) { return x(d.date)+1})
-            .attr("x2", function(d) { return x(d.date)-5})
-            .attr("y1", function(d) { return y(d.open);})
-            .attr("y2", function(d) { return y(d.open); });
+                
 
 }
 
