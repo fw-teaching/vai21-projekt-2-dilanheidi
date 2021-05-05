@@ -8,7 +8,7 @@ var pastDate = startdate.getDate() - 29;
 startdate.setDate(pastDate);
 startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + startdate.getDate();
 
-var curr = 0;
+var curr = "BTC-EUR";
 
 var time = [],
     low = [],
@@ -17,10 +17,15 @@ var time = [],
     closee = [],
     volume = [];
 
-//körs då man trycker på knappen
-function loadData() {
+function buttonClick() {
     //Get data from API for 30 days 
     var url = 'https://api.pro.coinbase.com/products/BTC-EUR/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400'
+    loadData(url);
+}
+
+//körs då man trycker på knappen
+function loadData(url) {
+    console.log("LOADING DATA:");
 
     $.getJSON(url, function(data) {
         //skriv ut data i console
@@ -30,76 +35,72 @@ function loadData() {
             console.log(x + " dataset: " + data[x]);
         }
 
-    function buildchart(data) { 
-        var margin = {top: 70, right: 20, bottom: 30, left: 40}; 
-        var w = 500,
-            h = 400;
+        function buildchart(data) {
+            var margin = { top: 70, right: 20, bottom: 30, left: 40 };
+            var w = 500,
+                h = 400;
 
-        var svg = d3.select("#chart")
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h)
-            .style("background", "white");
-            
+            var svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h)
+                .style("background", "white");
 
-        var parse = d3.timeParse("%s");
-        var format = d3.timeFormat("%Y-%m-%d");  //format on how to display the date   
-        var form =  d3.timeFormat("%d-%b");
 
-        data.forEach(function (d) { 
-            var time = parse(d[0]);
-            d.date = form(time);   //adding close,open etc to each of the arrays
+            var parse = d3.timeParse("%s");
+            var format = d3.timeFormat("%Y-%m-%d"); //format on how to display the date   
+            var form = d3.timeFormat("%d-%b");
+
+            data.forEach(function(d) {
+                var time = parse(d[0]);
+                d.date = form(time); //adding close,open etc to each of the arrays
                 d.low = +d[1];
                 d.high = +d[2];
                 d.open = +d[3];
                 d.close = +d[4];
                 d.volume = +d[5];
-            
-                low.push(d.low);  //arrays of all the values
+
+                low.push(d.low); //arrays of all the values
                 high.push(d.high);
                 openn.push(d.open);
                 closee.push(d.close);
                 volume.push(d.volume);
 
-            svg.selectAll("rect")
-                .data(data)
-                .enter().append("rect")
-                .attr("y", function(d) {
-                    return d3.max([d.open, d.close]);
-                })
-                .attr("height", function(d) { 
-                    return Math.abs(d.open - d.close);  //absolutavärdet 
-                })
-                .classed("rise", function(d) { 
-                        return (d.close>d.open); 
-                })
-                .classed("fall", function(d) { 
-                    return (d.open>d.close); 
-                });
+                svg.selectAll("rect")
+                    .data(data)
+                    .enter().append("rect")
+                    .attr("y", function(d) {
+                        return d3.max([d.open, d.close]);
+                    })
+                    .attr("height", function(d) {
+                        return Math.abs(d.open - d.close); //absolutavärdet 
+                    })
+                    .classed("rise", function(d) {
+                        return (d.close > d.open);
+                    })
+                    .classed("fall", function(d) {
+                        return (d.open > d.close);
+                    });
 
             });
             console.log(data);
 
-}
+        }
 
-buildchart(data);
+        buildchart(data);
 
     });
 }
 
 
-
+//Get url and sent it to loadData()
 function changeCurrency(inputCurr) {
     curr = inputCurr;
     console.log(curr);
 
     var url = 'https://api.pro.coinbase.com/products/' + curr + '/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400';
 
-    //Get data
-    $.getJSON(url, function(data) {
-        console.log(data);
-        //createChart(data);2
-    });
+    loadData(url);
 }
 
 function changeDays(inputDays) {
@@ -114,10 +115,5 @@ function changeDays(inputDays) {
     console.log(start + " " + curr);
 
     var url = 'https://api.pro.coinbase.com/products/' + curr + '/candles?start=' + start + '&end=' + enddate + '&granularity=86400';
-
-    //Get data
-    $.getJSON(url, function(data) {
-        console.log(data);
-        //createChart(data);
-    });
+    loadData(url);
 }
