@@ -48,7 +48,7 @@ function loadData() {
 
         data.forEach(function (d) { 
             var time = parse(d[0]);
-            d.date = time;   //adding close,open etc to each of the arrays
+            d.date = form(time);   //adding close,open etc to each of the arrays
                 d.low = +d[1];
                 d.high = +d[2];
                 d.open = +d[3];
@@ -78,11 +78,7 @@ function loadData() {
                 });
 
             });
-
-           
             console.log(data);
-
-                
 
 }
 
