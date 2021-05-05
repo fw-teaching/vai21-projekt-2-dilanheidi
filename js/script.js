@@ -11,11 +11,11 @@ startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + s
 var curr = 0;
 
 var time = [],
-low = [],
-high = [],
-openn = [],
-closee = [],
-volume = [];
+    low = [],
+    high = [],
+    openn = [],
+    closee = [],
+    volume = [];
 
 
 //körs då man trycker på knappen
@@ -32,8 +32,8 @@ function loadData() {
         }
 
     function buildchart(data) {  
-        var w = 600,
-            h = 800;
+        var w = 500,
+            h = 400;
 
         var svg = d3.select("#chart")
             .append("svg")
@@ -41,38 +41,63 @@ function loadData() {
             .attr("height", h)
             .style("background", "white");
 
-        var x = d3.scaleTime()
-            .range([0, w]);
-        var y = d3.scaleLinear()
-            .range([h, 0]);
-    
-
         var parse = d3.timeParse("%s");
-        var format = d3.timeFormat("%Y-%m-%d");  //format on how to display the date    
-         
-        data.forEach(function (d) {  //adding close,open etc to the data array 
+        var format = d3.timeFormat("%Y-%m-%d");  //format on how to display the date   
+        var form =  d3.timeFormat("%d-%b");
+
+        data.forEach(function (d) {  
             var maxVal = -1000;
             var minVal = 1000;
 
             var time = parse(d[0]);
-            d.date = format(time); 
+            d.date = form(time);   //adding close,open etc to each of the arrays
                 d.low = +d[1];
                 d.high = +d[2];
                 d.open = +d[3];
                 d.close = +d[4];
                 d.volume = +d[5];
 
-                if (d.high > maxVal)
+                if (d.high > maxVal) //största och minsta värdet 
                     maxVal = d.high;
                 if (d.low < minVal)
                     minVal = d.low;
             
-                low.push(d.low);
+                low.push(d.low);  //arrays of all the values
                 high.push(d.high);
                 openn.push(d.open);
                 closee.push(d.close);
                 volume.push(d.volume);
+                
             });
+            console.log(data);
+
+            svg.selectAll("line.ext")
+            .data(data)
+            .enter().append("line")
+            .attr("class", "ext")
+            .attr("x1", function(d) { 
+                return x(d.date)})
+            .attr("x2", function(d) { return x(d.date)})
+            .attr("y1", function(d) { return y(d.low);})
+            .attr("y2", function(d) { return y(d.high); });
+        
+          svg.selectAll("line.close")
+            .data(data)
+            .enter().append("line")
+            .attr("class", "close")
+            .attr("x1", function(d) { return x(d.date)+5})
+            .attr("x2", function(d) { return x(d.date)-1})
+            .attr("y1", function(d) { return y(d.close);})
+            .attr("y2", function(d) { return y(d.close); });
+        
+          svg.selectAll("line.open")
+            .data(data)
+            .enter().append("line")
+            .attr("class", "open")
+            .attr("x1", function(d) { return x(d.date)+1})
+            .attr("x2", function(d) { return x(d.date)-5})
+            .attr("y1", function(d) { return y(d.open);})
+            .attr("y2", function(d) { return y(d.open); });
 
 }
 
