@@ -68,7 +68,7 @@ function loadData() {
                     return d3.max([d.open, d.close]);
                 })
                 .attr("height", function(d) { 
-                    return -Math.abs(d.open - d.close);
+                    return Math.abs(d.open - d.close);  //absolutavärdet 
                 })
                 .classed("rise", function(d) { 
                         return (d.close>d.open); 
