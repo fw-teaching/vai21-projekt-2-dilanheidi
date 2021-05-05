@@ -25,7 +25,6 @@ function buttonClick() {
 
 //körs då man trycker på knappen
 function loadData(url) {
-    console.log("LOADING DATA:");
 
     $.getJSON(url, function(data) {
         //skriv ut data i console
@@ -36,16 +35,9 @@ function loadData(url) {
         }
 
         function buildchart(data) {
-            var margin = { top: 70, right: 20, bottom: 30, left: 40 };
-            var w = 500,
-                h = 400;
-
-            /*var svg = d3.select("#chart")
-                .append("svg")
-                .attr("width", w)
-                .attr("height", h)
-                .style("background", "white");*/
-
+            var margin = { top: 20, right: 20, bottom: 50, left: 70 };
+            var w = 960 - margin.left - margin.right,
+                h = 500 - margin.top - margin.bottom;
 
             var parse = d3.timeParse("%s");
             var format = d3.timeFormat("%Y-%m-%d"); //format on how to display the date   
@@ -69,34 +61,17 @@ function loadData(url) {
 
             console.log(data);
 
-            //
-
-            /*svg.selectAll("rect")
-                   .data(data)
-                   .enter().append("rect")
-                   .attr("y", function(d) {
-                       return d3.max([d.open, d.close]);
-                   })
-                   .attr("height", function(d) {
-                       return Math.abs(d.open - d.close); //absolutavärdet 
-                   })
-                   .classed("rise", function(d) {
-                       return (d.close > d.open);
-                   })
-                   .classed("fall", function(d) {
-                       return (d.open > d.close);
-                   });*/
-
             //X-Axis : date
-            var x = d3.scaleTime().range([0, w - margin.left - margin.right]);
+            var x = d3.scaleTime().range([0, w]);
             //scale range of data
             x.domain(d3.extent(data, function(d) { return d.date; }));
 
             //Y-Axis : currency
-            var y = d3.scaleLinear().range([h - margin.top - margin.bottom, 0]);
+            var y = d3.scaleLinear().range([h, 0]);
             y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
-            var svg = d3.select("body").append("svg")
+            var svg = d3.select("#chart")
+                .append("svg")
                 .attr("width", w + margin.left + margin.right)
                 .attr("height", h + margin.top + margin.bottom)
                 .append("g")
@@ -112,6 +87,23 @@ function loadData(url) {
             // Add the y Axis
             svg.append("g")
                 .call(d3.axisLeft(y));
+
+
+            svg.selectAll("rect")
+                .data(data)
+                .enter().append("rect")
+                .attr("y", function(d) {
+                    return d3.max([d.open, d.close]);
+                })
+                .attr("height", function(d) {
+                    return Math.abs(d.open - d.close); //absolutavärdet 
+                })
+                .classed("rise", function(d) {
+                    return (d.close > d.open);
+                })
+                .classed("fall", function(d) {
+                    return (d.open > d.close);
+                });
 
         }
 
