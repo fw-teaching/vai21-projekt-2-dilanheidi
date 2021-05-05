@@ -17,7 +17,6 @@ var time = [],
     closee = [],
     volume = [];
 
-
 //körs då man trycker på knappen
 function loadData() {
     //Get data from API for 30 days 
@@ -75,8 +74,7 @@ function loadData() {
             .data(data)
             .enter().append("line")
             .attr("class", "ext")
-            .attr("x1", function(d) { 
-                return x(d.date)})
+            .attr("x1", function(d) { return x(d.date)})
             .attr("x2", function(d) { return x(d.date)})
             .attr("y1", function(d) { return y(d.low);})
             .attr("y2", function(d) { return y(d.high); });
