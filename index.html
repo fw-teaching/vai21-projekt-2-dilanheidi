@@ -8,19 +8,50 @@
 
     <!-- d3.v5 rekommenderas i projekt2 eftersom events i d3.v6 är nya och inte så bra dokumenterade. -->
     <!-- <script src="https://d3js.org/d3.v6.js" defer></script> -->
-    <script src="https://d3js.org/d3.v5.js" defer></script>
-    <script src="js/script.js" defer></script>
+    <script src="https://d3js.org/d3.v5.min.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" media="screen" />
+    <script src="js/script.js"></script>
 
     <title>Projekt 2</title>
+
 </head>
 
-<body style="background-color: rgba(185, 252, 230, 0.568);">
-    <h1 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Projekt 2</h1>
+<body>
+    <h1>Projekt 2</h1>
     <h2>Heidi Saaristo och Dilan Zibari</h2>
-    <div>
-        <p>Valutadiagram</p>
+
+    <h3>Del 1</h3>
+    <div class="container">
+        <p>Hämta data</p>
+        <input type="button" value="Get data" onclick="buttonClick()">
     </div>
+    <h3>Del 2 & 3</h3>
+    <div class="container">
+        <div class="dropdown">
+            <form name="change_currency">
+                <label for="currency">Välj Valuta</label>
+                <select name="currency" id="curr" onchange="changeCurrency(this.value)">
+                <option value="ETH-EUR">ETH-EUR</option>
+                <option value="BNT-EUR">BNT-EUR</option>
+                <option value="BTC-EUR">BTC-EUR</option>
+            </select>
+            </form>
+        </div>
+        <div class="dropdown">
+            <form name="change_time">
+                <label for="time">Välj Dagar</label>
+                <select name="days" id="days" onchange="changeDays(this.value)">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="180">180</option>
+            </select>
+            </form>
+        </div>
+    <div id="chart">
 
 </body>
+
 
 </html>
