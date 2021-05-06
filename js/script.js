@@ -14,6 +14,7 @@ function buttonClick() {
     //Get data from API for 30 days 
     var url = 'https://api.pro.coinbase.com/products/ETH-EUR/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400'
     loadData(url);
+   
 }
 
 //körs då man trycker på knappen
@@ -34,11 +35,12 @@ function loadData(url) {
                 h = 500 - margin.top - margin.bottom;
 
             var parse = d3.timeParse("%s");
-            var form = d3.timeFormat("%d-%b"); //format on how to display the date   
+            var format = d3.timeFormat("%Y-%m-%d"); //formats on how to display the date  
+            var form = d3.timeFormat("%d-%b");  
 
             data.forEach(function(d) {
                 var time = parse(d[0]);
-                d.date = form(time); //adding close,open etc to each of the arrays
+                d.date = format(time); //adding close,open etc to each of the arrays
                 d.low = +d[1];
                 d.high = +d[2];
                 d.open = +d[3];
@@ -61,13 +63,18 @@ function loadData(url) {
                 return d.volume;
             })]);
 
+            var tooltip = d3.select("body").append("div")
+            .attr("id", "tooltip")
+            .style("opacity", 0);
+
             var svg = d3.select("#chart")
                 .append("svg")
                 .attr("width", w + margin.left + margin.right)
                 .attr("height", h + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform",
-                    "translate(" + margin.left + "," + margin.top + ")");
+                    "translate(" + margin.left + "," + margin.top + ")")
+            
 
             // Add the x Axis
             svg.append("g")
@@ -144,8 +151,18 @@ function loadData(url) {
                 .attr("width", 7)
                 .attr("fill", function(d) {
                     return d.open > d.close ? "red" : "lightgreen";
-                });
+                })
+                .on("mouseover", function(d, i) {
+                    tooltip.html(format(new Date(d.date)) + "<br>" + d.close + " €")
+                        .style("opacity", 0.8)
+                        .style("left", (d3.event.pageX)+10 + "px")
+                        .style("top", (d3.event.pageY)+5 + "px");
+                })
+            .on("mouseout", function(d) {
+                    tooltip.style("opacity", 0);
 
+                });
+                
         }
 
         buildchart(data);
