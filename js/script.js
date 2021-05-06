@@ -71,6 +71,12 @@ function loadData(url) {
             var y = d3.scaleLinear().range([h, 0]);
             y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
+            var y2 = d3.scaleLinear()
+                     .range([h, 0]);
+            y2.domain([0, d3.max(data, function(d) {
+                    return d.volume; 
+                })]);
+
             var svg = d3.select("#chart")
                 .append("svg")
                 .attr("width", w + margin.left + margin.right)
@@ -87,46 +93,60 @@ function loadData(url) {
             svg.append("g")
                 .call(d3.axisLeft(y));
 
+            svg.append("g")
+                .call(d3.axisRight(y2));
 
-            svg.selectAll("line.ext")
+            svg.selectAll("line.ext") //få sträcket mellan high och low 
+                .data(data)
+                .enter().append("svg:line")
+                .attr("class", "ext")
+                .attr("x1", function(d) { 
+                    return x(new Date(d.date))})
+                .attr("x2", function(d) { 
+                    return x(new Date(d.date))})
+                .attr("y1", function(d) { 
+                    return y(d.low);})
+                .attr("y2", function(d) { 
+                    return y(d.high);});
+
+            svg.selectAll("line.ext1")
                 .data(data)
                 .enter().append("line")
                 .attr("class", "ext")
-                .attr("x1", function(d) { return x(new Date(d.date)) })
-                .attr("x2", function(d) { return x(new Date(d.date)) })
-                .attr("y1", function(d) { return y(d.low); })
-                .attr("y2", function(d) { return y(d.high); });
-
-            svg.selectAll("line.close")
+                .attr("x1", function(d) { 
+                    return x(new Date(d.date))+1})
+                .attr("x2", function(d) { 
+                    return x(new Date(d.date))-1})
+                .attr("y1", function(d) { 
+                    return y(d.low);})
+                .attr("y2", function(d) { 
+                    return y(d.low); });
+              
+            svg.selectAll("line.ext2")
                 .data(data)
                 .enter().append("line")
-                .attr("class", "close")
-                .attr("x1", function(d) { return x(new Date(d.date)) + 5 })
-                .attr("x2", function(d) { return x(new Date(d.date)) - 1 })
-                .attr("y1", function(d) { return y(d.close); })
-                .attr("y2", function(d) { return y(d.close); });
-
-            svg.selectAll("line.open")
-                .data(data)
-                .enter().append("line")
-                .attr("class", "open")
-                .attr("x1", function(d) { return x(new Date(d.date)) + 1 })
-                .attr("x2", function(d) { return x(new Date(d.date)) - 5 })
-                .attr("y1", function(d) { return y(d.open); })
-                .attr("y2", function(d) { return y(d.open); });
-
-            var length = data.length;
-            //draw rectangles
-            //https://stackoverflow.com/questions/14085915/using-d3js-to-make-a-candlestick-or-ohlc-chart/46507975
+                .attr("class", "ext")
+                .attr("x1", function(d) { 
+                    return x(new Date(d.date))+1})
+                .attr("x2", function(d) { 
+                    return x(new Date(d.date))-1})
+                .attr("y1", function(d) { 
+                    return y(d.high);})
+                .attr("y2", function(d) { 
+                    return y(d.high); });
+              
             svg.selectAll("rect")
                 .data(data)
                 .enter().append("rect")
-                .attr("x", function(d) { return x(new Date(d.date)); })
-                .attr("y", function(d) { return y(Math.max(d.open, d.close)); })
-                .attr("height", function(d) { return y(Math.min(d.open, d.close)) - y(Math.max(d.open, d.close)); })
-                .attr("width", function(d) { return 0.5 * (w - 2 * margin) / length; })
-                .attr("fill", "red");
-
+                .attr("x", function(d) { 
+                    return x(new Date(d.date))-3; })
+                .attr("y", function(d) { 
+                    return y(Math.max(d.open, d.close));})
+                .attr("height", function(d) {
+                    return y(Math.min(d.open, d.close)) - y(Math.max(d.open, d.close));})
+                .attr("width", 7)
+                .attr("fill", function(d) {
+                    return d.open > d.close ? "red" : "lightgreen" ;});
         }
 
         buildchart(data);

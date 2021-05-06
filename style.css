@@ -10,8 +10,8 @@ body{
     stroke: #000;
     shape-rendering: crispEdges;
 }
-line.open, line.close, line.ext {
-    stroke: red;
-    stroke-width: 2;
+line.ext, line.ext1, line.ext2 {
+    stroke: #000;
+    stroke-width: 1;
     shape-rendering: crispEdges;
 }
