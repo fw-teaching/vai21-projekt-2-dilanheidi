@@ -1,0 +1,27 @@
+
+body{
+    background-color: rgb(240, 255, 244); 
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+line.ext, line.ext1, line.ext2 {
+    stroke: #000;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+#tooltip {
+    position: absolute;
+    width: 150px;
+    height: 50px;
+    pointer-events: none;
+    background-color: white; 
+    padding-left: 5px;
+    border-radius: 5px;
+}
