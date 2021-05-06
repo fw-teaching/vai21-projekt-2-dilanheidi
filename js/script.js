@@ -60,7 +60,6 @@ function loadData(url) {
             });
 
             console.log(data);
-
             console.log(data[0].date);
 
             //X-Axis : date
@@ -84,28 +83,38 @@ function loadData(url) {
             svg.append("g")
                 .attr("transform", "translate(0," + h + ")")
                 .call(d3.axisBottom(x));
-
-
             // Add the y Axis
             svg.append("g")
                 .call(d3.axisLeft(y));
 
 
-            svg.selectAll("rect")
-                .data(data)
-                .enter().append("rect")
-                .attr("y", function(d) {
-                    return d3.max([d.open, d.close]);
-                })
-                .attr("height", function(d) {
-                    return Math.abs(d.open - d.close); //absolutavärdet 
-                })
-                .classed("rise", function(d) {
-                    return (d.close > d.open);
-                })
-                .classed("fall", function(d) {
-                    return (d.open > d.close);
-                });
+  svg.selectAll("line.ext")
+      .data(data)
+      .enter().append("line")
+      .attr("class", "ext")
+      .attr("x1", function(d) { return x(new Date(d.date))})
+      .attr("x2", function(d) { return x(new Date(d.date))})
+      .attr("y1", function(d) { return y(d.low);})
+      .attr("y2", function(d) { return y(d.high); });
+  
+    svg.selectAll("line.close")
+      .data(data)
+      .enter().append("line")
+      .attr("class", "close")
+      .attr("x1", function(d) { return x(new Date(d.date))+5})
+      .attr("x2", function(d) { return x(new Date(d.date))-1})
+      .attr("y1", function(d) { return y(d.close);})
+      .attr("y2", function(d) { return y(d.close);});
+  
+    svg.selectAll("line.open")
+      .data(data)
+      .enter().append("line")
+      .attr("class", "open")
+      .attr("x1", function(d) { return x(new Date(d.date))+1})
+      .attr("x2", function(d) { return x(new Date(d.date))-5})
+      .attr("y1", function(d) { return y(d.open);})
+      .attr("y2", function(d) { return y(d.open); });
+
 
         }
 
