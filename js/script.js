@@ -8,7 +8,7 @@ var pastDate = startdate.getDate() - 29;
 startdate.setDate(pastDate);
 startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + startdate.getDate();
 
-var curr = "BTC-EUR";
+var curr = "ETH-EUR";
 
 var time = [],
     low = [],
@@ -72,10 +72,10 @@ function loadData(url) {
             y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
             var y2 = d3.scaleLinear()
-                     .range([h, 0]);
+                .range([h, 0]);
             y2.domain([0, d3.max(data, function(d) {
-                    return d.volume; 
-                })]);
+                return d.volume;
+            })]);
 
             var svg = d3.select("#chart")
                 .append("svg")
@@ -100,53 +100,69 @@ function loadData(url) {
                 .data(data)
                 .enter().append("svg:line")
                 .attr("class", "ext")
-                .attr("x1", function(d) { 
-                    return x(new Date(d.date))})
-                .attr("x2", function(d) { 
-                    return x(new Date(d.date))})
-                .attr("y1", function(d) { 
-                    return y(d.low);})
-                .attr("y2", function(d) { 
-                    return y(d.high);});
+                .attr("x1", function(d) {
+                    return x(new Date(d.date))
+                })
+                .attr("x2", function(d) {
+                    return x(new Date(d.date))
+                })
+                .attr("y1", function(d) {
+                    return y(d.low);
+                })
+                .attr("y2", function(d) {
+                    return y(d.high);
+                });
 
             svg.selectAll("line.ext1")
                 .data(data)
                 .enter().append("line")
                 .attr("class", "ext")
-                .attr("x1", function(d) { 
-                    return x(new Date(d.date))+1})
-                .attr("x2", function(d) { 
-                    return x(new Date(d.date))-1})
-                .attr("y1", function(d) { 
-                    return y(d.low);})
-                .attr("y2", function(d) { 
-                    return y(d.low); });
-              
+                .attr("x1", function(d) {
+                    return x(new Date(d.date)) + 1
+                })
+                .attr("x2", function(d) {
+                    return x(new Date(d.date)) - 1
+                })
+                .attr("y1", function(d) {
+                    return y(d.low);
+                })
+                .attr("y2", function(d) {
+                    return y(d.low);
+                });
+
             svg.selectAll("line.ext2")
                 .data(data)
                 .enter().append("line")
                 .attr("class", "ext")
-                .attr("x1", function(d) { 
-                    return x(new Date(d.date))+1})
-                .attr("x2", function(d) { 
-                    return x(new Date(d.date))-1})
-                .attr("y1", function(d) { 
-                    return y(d.high);})
-                .attr("y2", function(d) { 
-                    return y(d.high); });
-              
+                .attr("x1", function(d) {
+                    return x(new Date(d.date)) + 1
+                })
+                .attr("x2", function(d) {
+                    return x(new Date(d.date)) - 1
+                })
+                .attr("y1", function(d) {
+                    return y(d.high);
+                })
+                .attr("y2", function(d) {
+                    return y(d.high);
+                });
+
             svg.selectAll("rect")
                 .data(data)
                 .enter().append("rect")
-                .attr("x", function(d) { 
-                    return x(new Date(d.date))-3; })
-                .attr("y", function(d) { 
-                    return y(Math.max(d.open, d.close));})
+                .attr("x", function(d) {
+                    return x(new Date(d.date)) - 3;
+                })
+                .attr("y", function(d) {
+                    return y(Math.max(d.open, d.close));
+                })
                 .attr("height", function(d) {
-                    return y(Math.min(d.open, d.close)) - y(Math.max(d.open, d.close));})
+                    return y(Math.min(d.open, d.close)) - y(Math.max(d.open, d.close));
+                })
                 .attr("width", 7)
                 .attr("fill", function(d) {
-                    return d.open > d.close ? "red" : "lightgreen" ;});
+                    return d.open > d.close ? "red" : "lightgreen";
+                });
         }
 
         buildchart(data);
