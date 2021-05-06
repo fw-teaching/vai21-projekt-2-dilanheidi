@@ -115,16 +115,17 @@ function loadData(url) {
                 .attr("y1", function(d) { return y(d.open); })
                 .attr("y2", function(d) { return y(d.open); });
 
+            var length = data.length;
             //draw rectangles
             //https://stackoverflow.com/questions/14085915/using-d3js-to-make-a-candlestick-or-ohlc-chart/46507975
             svg.selectAll("rect")
                 .data(data)
                 .enter().append("rect")
                 .attr("x", function(d) { return x(new Date(d.date)); })
-                .attr("y", function(d) { return y(max(d.open, d.close)); })
-                .attr("height", function(d) { return y(min(d.open, d.close)) - y(max(d.open, d.close)); })
-                .attr("width", function(d) { return 0.5 * (w - 2 * margin) / data.length; })
-                .attr("fill", "black");
+                .attr("y", function(d) { return y(Math.max(d.open, d.close)); })
+                .attr("height", function(d) { return y(Math.min(d.open, d.close)) - y(Math.max(d.open, d.close)); })
+                .attr("width", function(d) { return 0.5 * (w - 2 * margin) / length; })
+                .attr("fill", "red");
 
         }
 
