@@ -10,13 +10,6 @@ startdate = startdate.getFullYear() + '-' + (startdate.getMonth() + 1) + '-' + s
 
 var curr = "ETH-EUR";
 
-var time = [],
-    low = [],
-    high = [],
-    openn = [],
-    closee = [],
-    volume = [];
-
 function buttonClick() {
     //Get data from API for 30 days 
     var url = 'https://api.pro.coinbase.com/products/ETH-EUR/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400'
@@ -40,8 +33,7 @@ function loadData(url) {
                 h = 500 - margin.top - margin.bottom;
 
             var parse = d3.timeParse("%s");
-            var format = d3.timeFormat("%Y-%m-%d"); //format on how to display the date   
-            var form = d3.timeFormat("%d-%b");
+            var form = d3.timeFormat("%d-%b"); //format on how to display the date   
 
             data.forEach(function(d) {
                 var time = parse(d[0]);
@@ -51,16 +43,7 @@ function loadData(url) {
                 d.open = +d[3];
                 d.close = +d[4];
                 d.volume = +d[5];
-
-                low.push(d.low); //arrays of all the values
-                high.push(d.high);
-                openn.push(d.open);
-                closee.push(d.close);
-                volume.push(d.volume);
             });
-
-            console.log(data);
-            console.log(data[0].date);
 
             //X-Axis : date
             var x = d3.scaleTime().range([0, w]);
@@ -93,9 +76,7 @@ function loadData(url) {
             svg.append("g")
                 .call(d3.axisLeft(y));
 
-            svg.append("g")
-                .call(d3.axisRight(y2));
-
+      
             svg.selectAll("line.ext") //få sträcket mellan high och low 
                 .data(data)
                 .enter().append("svg:line")
@@ -163,6 +144,7 @@ function loadData(url) {
                 .attr("fill", function(d) {
                     return d.open > d.close ? "red" : "lightgreen";
                 });
+
         }
 
         buildchart(data);
