@@ -64,9 +64,9 @@ function loadData(url) {
             console.log(data[0].date);
 
             //X-Axis : date
-            var x = d3.scaleBand().range([0, w]);
+            var x = d3.scaleTime().range([0, w]);
             //scale range of data
-            x.domain(d3.extent(data, function(d) { return d.date; }));
+            x.domain(d3.extent(data, function(d) { return new Date(d.date); }));
 
             //Y-Axis : currency
             var y = d3.scaleLinear().range([h, 0]);
