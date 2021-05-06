@@ -88,33 +88,45 @@ function loadData(url) {
                 .call(d3.axisLeft(y));
 
 
-  svg.selectAll("line.ext")
-      .data(data)
-      .enter().append("line")
-      .attr("class", "ext")
-      .attr("x1", function(d) { return x(new Date(d.date))})
-      .attr("x2", function(d) { return x(new Date(d.date))})
-      .attr("y1", function(d) { return y(d.low);})
-      .attr("y2", function(d) { return y(d.high); });
-  
-    svg.selectAll("line.close")
-      .data(data)
-      .enter().append("line")
-      .attr("class", "close")
-      .attr("x1", function(d) { return x(new Date(d.date))+5})
-      .attr("x2", function(d) { return x(new Date(d.date))-1})
-      .attr("y1", function(d) { return y(d.close);})
-      .attr("y2", function(d) { return y(d.close);});
-  
-    svg.selectAll("line.open")
-      .data(data)
-      .enter().append("line")
-      .attr("class", "open")
-      .attr("x1", function(d) { return x(new Date(d.date))+1})
-      .attr("x2", function(d) { return x(new Date(d.date))-5})
-      .attr("y1", function(d) { return y(d.open);})
-      .attr("y2", function(d) { return y(d.open); });
+            svg.selectAll("line.ext")
+                .data(data)
+                .enter().append("line")
+                .attr("class", "ext")
+                .attr("x1", function(d) { return x(new Date(d.date)) })
+                .attr("x2", function(d) { return x(new Date(d.date)) })
+                .attr("y1", function(d) { return y(d.low); })
+                .attr("y2", function(d) { return y(d.high); });
 
+            svg.selectAll("line.close")
+                .data(data)
+                .enter().append("line")
+                .attr("class", "close")
+                .attr("x1", function(d) { return x(new Date(d.date)) + 5 })
+                .attr("x2", function(d) { return x(new Date(d.date)) - 1 })
+                .attr("y1", function(d) { return y(d.close); })
+                .attr("y2", function(d) { return y(d.close); });
+
+            svg.selectAll("line.open")
+                .data(data)
+                .enter().append("line")
+                .attr("class", "open")
+                .attr("x1", function(d) { return x(new Date(d.date)) + 1 })
+                .attr("x2", function(d) { return x(new Date(d.date)) - 5 })
+                .attr("y1", function(d) { return y(d.open); })
+                .attr("y2", function(d) { return y(d.open); });
+
+            let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, w]).padding(0.3)
+
+            //draw rectangles
+            //https://stackoverflow.com/questions/14085915/using-d3js-to-make-a-candlestick-or-ohlc-chart/46507975
+            svg.selectAll("rect")
+                .data(data)
+                .enter().append("rect")
+                .attr("x", function(d) { return x(new Date(d.date)); })
+                .attr("y", function(d) { return y(max(d.open, d.close)); })
+                .attr("height", function(d) { return y(min(d.open, d.close)) - y(max(d.open, d.close)); })
+                .attr("width", function(d) { return 0.5 * (w - 2 * margin) / data.length; })
+                .attr("fill", "black");
 
         }
 
