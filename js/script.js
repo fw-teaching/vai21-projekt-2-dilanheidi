@@ -18,6 +18,7 @@ function buttonClick() {
 
 //körs då man trycker på knappen
 function loadData(url) {
+    d3.selectAll("#chart > *").remove(); //raderar förra charten så att det inte blir flera charts under varann
 
     $.getJSON(url, function(data) {
         //skriv ut data i console
@@ -79,7 +80,7 @@ function loadData(url) {
       
             svg.selectAll("line.ext") //få sträcket mellan high och low 
                 .data(data)
-                .enter().append("svg:line")
+                .enter().append("line")
                 .attr("class", "ext")
                 .attr("x1", function(d) {
                     return x(new Date(d.date))
