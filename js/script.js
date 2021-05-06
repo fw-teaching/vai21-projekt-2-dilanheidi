@@ -61,8 +61,10 @@ function loadData(url) {
 
             console.log(data);
 
+            console.log(data[0].date);
+
             //X-Axis : date
-            var x = d3.scaleTime().range([0, w]);
+            var x = d3.scaleBand().range([0, w]);
             //scale range of data
             x.domain(d3.extent(data, function(d) { return d.date; }));
 
