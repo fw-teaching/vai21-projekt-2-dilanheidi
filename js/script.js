@@ -14,7 +14,7 @@ function buttonClick() {
     //Get data from API for 30 days 
     var url = 'https://api.pro.coinbase.com/products/ETH-EUR/candles?start=' + startdate + '&end=' + enddate + '&granularity=86400'
     loadData(url);
-   
+    
 }
 
 //körs då man trycker på knappen
