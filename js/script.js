@@ -115,8 +115,6 @@ function loadData(url) {
                 .attr("y1", function(d) { return y(d.open); })
                 .attr("y2", function(d) { return y(d.open); });
 
-            let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, w]).padding(0.3)
-
             //draw rectangles
             //https://stackoverflow.com/questions/14085915/using-d3js-to-make-a-candlestick-or-ohlc-chart/46507975
             svg.selectAll("rect")
